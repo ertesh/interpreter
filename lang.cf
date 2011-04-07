@@ -1,0 +1,69 @@
+-- Maciej Andrejczuk
+
+comment "//" ;
+comment "/*" "*/" ;
+
+Prog.  Program  ::= [Function] ;
+Fun.   Function ::= Type Ident "(" [FunDecl] ")" StmBlock ;
+Block. StmBlock    ::= "{" [Stm] "}" ;
+
+FDec.    FunDecl  ::= Decl ;
+FVarDec. FunDecl  ::= "var" Decl ;
+Dec.     Decl     ::= Type [Ident] OptArr OptDef ;
+Arr.     OptArr   ::= "[" Integer "]" ;
+NoArr.   OptArr   ::= "" ;
+Def.     OptDef   ::= "=" Exp ;
+NoDef.   OptDef   ::= "" ;
+
+terminator Function "" ;
+terminator Stm "" ;
+separator  FunDecl "," ;
+separator  nonempty Ident "," ;
+
+SDecl.   Stm ::= Decl ";"  ;
+SExp.    Stm ::= Exp ";" ;
+SFun.    Stm ::= Function ";" ;
+SBlock.  Stm ::= StmBlock ;
+SWhile.  Stm ::= "while" "(" Exp ")" StmBlock ;
+SReturn. Stm ::= "return" Exp ";" ;
+SIf.     Stm ::= "if" "(" BoolExp ")" StmBlock OptElse ;
+SElse.   OptElse ::= "else" StmBlock ;
+SNoElse. OptElse ::= "" ;
+-- Jednoznacznosc if dzieki wymuszeniu nawiasow klamrowych
+
+BRel.    BoolExp ::= Exp OpRel Exp ;
+BSum.    BoolExp ::= BoolExp BoolOp BoolExp ;
+BVal.    BoolExp ::= BoolConst ;
+BTrue.   BoolConst ::= "True" ;
+BFalse.  BoolConst ::= "False" ;
+
+OpEq.   OpRel ::= "==" ;
+OpNeq.  OpRel ::= "!=" ;
+OpLt.   OpRel ::= "<" ;
+OpLe.   OpRel ::= "<=" ;
+OpGt.   OpRel ::= ">" ;
+OpGe.   OpRel ::= ">=" ;
+
+BAnd.   BoolOp ::= "and" ;
+BOr.    BoolOp ::= "or" ;
+BXor.   BoolOp ::= "xor" ;
+
+EAss.    Exp  ::= Ident "=" Exp ;
+EAdd.    Exp2 ::= Exp2 "+" Exp3 ;
+ESub.    Exp2 ::= Exp2 "-" Exp3 ;
+EMul.    Exp3 ::= Exp3 "*" Exp4 ;
+EBoolOp. Exp4 ::= BoolExp ;
+Call.    Exp4 ::= Ident "(" [Exp] ")" ;
+EVar.    Exp4 ::= Ident ;
+EStr.    Exp4 ::= String ;
+EInt.    Exp4 ::= Integer ;
+
+coercions Exp 4 ;
+
+separator Exp "," ;
+
+TInt.    Type ::= "int" ;
+TString. Type ::= "string" ;
+TBool.   Type ::= "bool" ;
+TArray.  Type ::= Type "[]" ;
+

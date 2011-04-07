@@ -1,0 +1,15 @@
+Maciej Andrejczuk
+
+
+Podzbiór języka C:
+- Typowanie statyczne
+- Typy: int, bool, string, tablice
+- if, while
+- Widoczność zmiennych jak w C
+- Przekazywanie przez wartość lub referecje
+- Rekurencja
+- Funkcje wewnętrzne
+
+Ograniczenia:
+- Brak struktur
+- Brak wskaźników
