@@ -9,26 +9,24 @@ Block. StmBlock    ::= "{" [Stm] "}" ;
 
 FDec.    FunDecl  ::= Decl ;
 FVarDec. FunDecl  ::= "var" Decl ;
-Dec.     Decl     ::= Type [Ident] OptArr OptDef ;
-Arr.     OptArr   ::= "[" Integer "]" ;
-NoArr.   OptArr   ::= "" ;
-Def.     OptDef   ::= "=" Exp ;
-NoDef.   OptDef   ::= "" ;
+Dec.     Decl     ::= Type [Ident] ;
+Def.     Def      ::= Decl "=" Exp ;
 
 terminator Function "" ;
 terminator Stm "" ;
 separator  FunDecl "," ;
 separator  nonempty Ident "," ;
 
-SDecl.   Stm ::= Decl ";"  ;
+SDecl.   Stm ::= Decl ";" ;
+SDef.    Stm ::= Def ";" ;
 SExp.    Stm ::= Exp ";" ;
 SFun.    Stm ::= Function ";" ;
 SBlock.  Stm ::= StmBlock ;
-SWhile.  Stm ::= "while" "(" Exp ")" StmBlock ;
+SWhile.  Stm ::= "while" "(" Exp ")" StmBlock ";";
 SReturn. Stm ::= "return" Exp ";" ;
-SIf.     Stm ::= "if" "(" BoolExp ")" StmBlock OptElse ;
-SElse.   OptElse ::= "else" StmBlock ;
-SNoElse. OptElse ::= "" ;
+SIf.     Stm ::= "if" "(" BoolExp ")" StmBlock OptElse;
+SNoElse. OptElse ::= ";" ;
+SIfElse. OptElse ::= "else" StmBlock ";" ;
 -- Jednoznacznosc if dzieki wymuszeniu nawiasow klamrowych
 
 BRel.    BoolExp ::= Exp OpRel Exp ;
@@ -57,6 +55,7 @@ Call.    Exp4 ::= Ident "(" [Exp] ")" ;
 EVar.    Exp4 ::= Ident ;
 EStr.    Exp4 ::= String ;
 EInt.    Exp4 ::= Integer ;
+EArray.  Exp4 ::= Ident "[" Integer "]" ;
 
 coercions Exp 4 ;
 
