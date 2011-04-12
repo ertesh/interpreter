@@ -7,7 +7,7 @@ Prog.  Program  ::= [Function] ;
 Fun.   Function ::= Type Ident "(" [FunDecl] ")" StmBlock ;
 Block. StmBlock    ::= "{" [Stm] "}" ;
 
-FDec.    FunDecl  ::= Decl ;
+FDec.    FunDecl  ::= Decl ; -- Modifier
 FVarDec. FunDecl  ::= "var" Decl ;
 Dec.     Decl     ::= Type [Ident] ;
 Def.     Def      ::= Decl "=" Exp ;
@@ -20,6 +20,7 @@ separator  nonempty Ident "," ;
 SDecl.   Stm ::= Decl ";" ;
 SDef.    Stm ::= Def ";" ;
 SExp.    Stm ::= Exp ";" ;
+SAssign. Stm ::= Ident "=" Exp ;
 SFun.    Stm ::= Function ";" ;
 SBlock.  Stm ::= StmBlock ;
 SWhile.  Stm ::= "while" "(" Exp ")" StmBlock ";";
@@ -29,11 +30,17 @@ SNoElse. OptElse ::= ";" ;
 SIfElse. OptElse ::= "else" StmBlock ";" ;
 -- Jednoznacznosc if dzieki wymuszeniu nawiasow klamrowych
 
-BRel.    BoolExp ::= Exp OpRel Exp ;
-BSum.    BoolExp ::= BoolExp BoolOp BoolExp ;
-BVal.    BoolExp ::= BoolConst ;
+
+BOr.     BoolExp ::= BoolExp "or" BoolExp1 ;
+BAnd.    BoolExp1 ::= BoolExp1 "and" BoolExp2 ; 
+BRel.    BoolExp2 ::= Exp OpRel Exp ;
+BNot.    BoolExp3 ::= "not" BoolExp ;
+BVal.    BoolExp4 ::= BoolConst ;
+
 BTrue.   BoolConst ::= "True" ;
 BFalse.  BoolConst ::= "False" ;
+
+coercions BoolExp 5 ;
 
 OpEq.   OpRel ::= "==" ;
 OpNeq.  OpRel ::= "!=" ;
@@ -42,20 +49,17 @@ OpLe.   OpRel ::= "<=" ;
 OpGt.   OpRel ::= ">" ;
 OpGe.   OpRel ::= ">=" ;
 
-BAnd.   BoolOp ::= "and" ;
-BOr.    BoolOp ::= "or" ;
-BXor.   BoolOp ::= "xor" ;
-
-EAss.    Exp  ::= Ident "=" Exp ;
-EAdd.    Exp2 ::= Exp2 "+" Exp3 ;
-ESub.    Exp2 ::= Exp2 "-" Exp3 ;
-EMul.    Exp3 ::= Exp3 "*" Exp4 ;
-EBoolOp. Exp4 ::= BoolExp ;
+EAdd.    Exp ::= Exp "+" Exp1 ;
+ESub.    Exp ::= Exp "-" Exp1 ;
+EMul.    Exp2 ::= Exp1 "*" Exp2 ;
+EDiv.    Exp2 ::= Exp1 "/" Exp2 ;
+EMod.    Exp2 ::= Exp1 "%" Exp2 ;
+EBoolOp. Exp3 ::= BoolExp ;
 Call.    Exp4 ::= Ident "(" [Exp] ")" ;
+EArray.  Exp4 ::= Ident "[" Integer "]" ;
 EVar.    Exp4 ::= Ident ;
 EStr.    Exp4 ::= String ;
 EInt.    Exp4 ::= Integer ;
-EArray.  Exp4 ::= Ident "[" Integer "]" ;
 
 coercions Exp 4 ;
 

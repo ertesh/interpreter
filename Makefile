@@ -4,7 +4,7 @@ EXAMPLE="examples/example.cpp"
 all: compile3 run
 
 compile1:
-	bnfc -p Syntax -haskell $(GRAM)
+	bnfc -haskell $(GRAM)
 
 compile2: compile1
 	happy -gca Parlang.y
