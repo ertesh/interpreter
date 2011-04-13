@@ -7,7 +7,7 @@ Prog.  Program  ::= [Function] ;
 Fun.   Function ::= Type Ident "(" [FunDecl] ")" StmBlock ;
 Block. StmBlock    ::= "{" [Stm] "}" ;
 
-FDec.    FunDecl  ::= Decl ; -- Modifier
+FDec.    FunDecl  ::= Decl ;
 FVarDec. FunDecl  ::= "var" Decl ;
 Dec.     Decl     ::= Type [Ident] ;
 Def.     Def      ::= Decl "=" Exp ;
@@ -23,24 +23,29 @@ SExp.    Stm ::= Exp ";" ;
 SAssign. Stm ::= Ident "=" Exp ;
 SFun.    Stm ::= Function ";" ;
 SBlock.  Stm ::= StmBlock ;
-SWhile.  Stm ::= "while" "(" Exp ")" StmBlock ";";
+SWhile.  Stm ::= "while" "(" Exp ")" StmBlock ";" ;
 SReturn. Stm ::= "return" Exp ";" ;
-SIf.     Stm ::= "if" "(" BoolExp ")" StmBlock OptElse;
+SIf.     Stm ::= "if" "(" Exp ")" StmBlock OptElse ;
 SNoElse. OptElse ::= ";" ;
 SIfElse. OptElse ::= "else" StmBlock ";" ;
 -- Jednoznacznosc if dzieki wymuszeniu nawiasow klamrowych
 
 
-BOr.     BoolExp ::= BoolExp "or" BoolExp1 ;
-BAnd.    BoolExp1 ::= BoolExp1 "and" BoolExp2 ; 
-BRel.    BoolExp2 ::= Exp OpRel Exp ;
-BNot.    BoolExp3 ::= "not" BoolExp ;
-BVal.    BoolExp4 ::= BoolConst ;
-
-BTrue.   BoolConst ::= "True" ;
-BFalse.  BoolConst ::= "False" ;
-
-coercions BoolExp 5 ;
+EOr.     Exp ::= Exp "or" Exp1 ;
+BAnd.    Exp1 ::= Exp1 "and" Exp2 ;
+BRel.    Exp2 ::= Exp3 OpRel Exp3 ;
+EAdd.    Exp3 ::= Exp3 "+" Exp4 ;
+ESub.    Exp3 ::= Exp3 "-" Exp4 ;
+EMul.    Exp4 ::= Exp4 "*" Exp5 ;
+EDiv.    Exp4 ::= Exp4 "/" Exp5 ;
+EMod.    Exp4 ::= Exp4 "%" Exp5 ;
+BNot.    Exp5 ::= "not" Exp6 ;
+ECall.   Exp6 ::= Ident "(" [Exp] ")" ;
+EArray.  Exp6 ::= Ident "[" Integer "]" ;
+EVar.    Exp7 ::= Ident ;
+EStr.    Exp7 ::= String ;
+EInt.    Exp7 ::= Integer ;
+EBool.   Exp7 ::= BoolConst ;
 
 OpEq.   OpRel ::= "==" ;
 OpNeq.  OpRel ::= "!=" ;
@@ -49,19 +54,10 @@ OpLe.   OpRel ::= "<=" ;
 OpGt.   OpRel ::= ">" ;
 OpGe.   OpRel ::= ">=" ;
 
-EAdd.    Exp ::= Exp "+" Exp1 ;
-ESub.    Exp ::= Exp "-" Exp1 ;
-EMul.    Exp2 ::= Exp1 "*" Exp2 ;
-EDiv.    Exp2 ::= Exp1 "/" Exp2 ;
-EMod.    Exp2 ::= Exp1 "%" Exp2 ;
-EBoolOp. Exp3 ::= BoolExp ;
-Call.    Exp4 ::= Ident "(" [Exp] ")" ;
-EArray.  Exp4 ::= Ident "[" Integer "]" ;
-EVar.    Exp4 ::= Ident ;
-EStr.    Exp4 ::= String ;
-EInt.    Exp4 ::= Integer ;
+BTrue.   BoolConst ::= "True" ;
+BFalse.  BoolConst ::= "False" ;
 
-coercions Exp 4 ;
+coercions Exp 7 ;
 
 separator Exp "," ;
 
