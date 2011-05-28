@@ -7,7 +7,7 @@ compile1:
 	bnfc -haskell $(GRAM)
 
 compile2: compile1
-	happy -gca Parlang.y
+	happy -gca -i Parlang.y
 	alex -g Lexlang.x
 	latex Doclang.tex
 	dvips Doclang.dvi -o Doclang.ps
